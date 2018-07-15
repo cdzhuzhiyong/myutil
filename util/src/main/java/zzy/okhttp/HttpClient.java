@@ -2,16 +2,19 @@ package zzy.okhttp;
 
 import okhttp3.*;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * ${http请求工具,JDK1.8以上版本}
+ * cdzhuzhiyong
+ * 2018/7/15 18:19
+ **/
 public class HttpClient {
     private final OkHttpClient CLIENT = new OkHttpClient();
     private HttpResponse httpResponse = new HttpResponse();
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     //不带参数的get请求
     public HttpResponse get(String url){
         Request request = new Request.Builder()
@@ -20,13 +23,9 @@ public class HttpClient {
         try {
             Response response = CLIENT.newCall(request).execute();
             httpResponse.setSuccess(true);
-            try{
-                String result = response.body().string();
-                httpResponse.setResult(result);
-            }catch (NullPointerException e1){
-                httpResponse.setResult(null);
-            }
-        } catch (IOException e) {
+            String result = response.body().string();
+            httpResponse.setResult(result);
+        } catch (Exception e) {
             httpResponse.setSuccess(false);
             httpResponse.setError_msg("HTTP请求异常");
         }
@@ -41,22 +40,37 @@ public class HttpClient {
         try {
             Response response = CLIENT.newCall(request).execute();
             httpResponse.setSuccess(true);
-            try{
-                String result = response.body().string();
-                httpResponse.setResult(result);
-            }catch (NullPointerException e1){
-                httpResponse.setResult(null);
-            }
-        } catch (IOException e) {
+            String result = response.body().string();
+            httpResponse.setResult(result);
+        } catch (Exception e) {
             httpResponse.setSuccess(false);
             httpResponse.setError_msg("HTTP请求异常");
         }
         return httpResponse;
     }
 
-//    public HttpResponse post(String url,Map<String,String> params){
-//
-//    }
+    public HttpResponse post(String url,Map<String,String> params){
+        FormBody.Builder formBodyBuilder = new FormBody.Builder();
+        for (Map.Entry<String,String> entry:params.entrySet()) {
+            addParam(formBodyBuilder,entry);
+        }
+        RequestBody requestBody = formBodyBuilder.build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        try {
+            Response response = CLIENT.newCall(request).execute();
+            httpResponse.setSuccess(true);
+            String result = response.body().string();
+            httpResponse.setResult(result);
+        } catch (Exception e) {
+            httpResponse.setSuccess(false);
+            httpResponse.setError_msg("HTTP请求异常");
+        }
+        return httpResponse;
+
+    }
 
     //参数为json格式的post请求
     public HttpResponse post(String url,String json){
@@ -68,13 +82,9 @@ public class HttpClient {
         try {
             Response response = CLIENT.newCall(request).execute();
             httpResponse.setSuccess(true);
-            try{
-                String result = response.body().string();
-                httpResponse.setResult(result);
-            }catch (NullPointerException e1){
-                httpResponse.setResult(null);
-            }
-        } catch (IOException e) {
+            String result = response.body().string();
+            httpResponse.setResult(result);
+        } catch (Exception e) {
             httpResponse.setSuccess(false);
             httpResponse.setError_msg("HTTP请求异常");
         }
@@ -96,13 +106,9 @@ public class HttpClient {
         try {
             Response response = CLIENT.newCall(request).execute();
             httpResponse.setSuccess(true);
-            try{
-                String result = response.body().string();
-                httpResponse.setResult(result);
-            }catch (NullPointerException e1){
-                httpResponse.setResult(null);
-            }
-        } catch (IOException e) {
+            String result = response.body().string();
+            httpResponse.setResult(result);
+        } catch (Exception e) {
             httpResponse.setSuccess(false);
             httpResponse.setError_msg("HTTP请求异常");
         }
@@ -122,5 +128,9 @@ public class HttpClient {
 
     private void addHeader(Request.Builder builder,Map.Entry<String,String> entry){
          builder.addHeader(entry.getKey(),entry.getValue());
+    }
+
+    private void addParam(FormBody.Builder builder, Map.Entry<String,String> entry){
+        builder.add(entry.getKey(),entry.getValue());
     }
 }
