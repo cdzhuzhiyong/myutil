@@ -49,6 +49,7 @@ public class HttpClient {
         return httpResponse;
     }
 
+    //普通表格参数的post请求
     public HttpResponse post(String url,Map<String,String> params){
         FormBody.Builder formBodyBuilder = new FormBody.Builder();
         for (Map.Entry<String,String> entry:params.entrySet()) {
@@ -56,6 +57,35 @@ public class HttpClient {
         }
         RequestBody requestBody = formBodyBuilder.build();
         Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        try {
+            Response response = CLIENT.newCall(request).execute();
+            httpResponse.setSuccess(true);
+            String result = response.body().string();
+            httpResponse.setResult(result);
+        } catch (Exception e) {
+            httpResponse.setSuccess(false);
+            httpResponse.setError_msg("HTTP请求异常");
+        }
+        return httpResponse;
+
+    }
+
+    //带请求头的普通表格参数的post请求
+    public HttpResponse post(String url,Map<String,String> params,Map<String,String> header){
+        Set<Map.Entry<String,String>> headerSet = header.entrySet();
+        FormBody.Builder formBodyBuilder = new FormBody.Builder();
+        for (Map.Entry<String,String> entry:params.entrySet()) {
+            addParam(formBodyBuilder,entry);
+        }
+        RequestBody requestBody = formBodyBuilder.build();
+        Request.Builder requestBuilder = new Request.Builder();
+        for (Map.Entry<String,String> entry:headerSet) {
+            addHeader(requestBuilder,entry);
+        }
+        Request request = requestBuilder
                 .url(url)
                 .post(requestBody)
                 .build();
