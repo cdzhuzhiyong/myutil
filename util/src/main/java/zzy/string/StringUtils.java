@@ -1,5 +1,7 @@
 package zzy.string;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,5 +38,17 @@ public class StringUtils {
      **/
     public static boolean isNotEmpty(String element){
         return !isEmpty(element);
+    }
+
+    /**
+     * ${按切割符切割字符串返回List集合}
+     * cdzhuzhiyong
+     * 2018/8/24 16:19
+     **/
+    public static List<String> getListBySplit(String content,String delimiter){
+        if (isNotEmpty(content)&&content.contains(delimiter)){
+            return Arrays.asList(content.split(delimiter));
+        }
+        return null;
     }
 }
