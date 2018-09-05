@@ -1,5 +1,6 @@
 package zzy.readfile;
 
+import org.apache.commons.io.input.BOMInputStream;
 import zzy.string.StringUtils;
 
 import java.io.*;
@@ -37,7 +38,7 @@ public class ReadFileToString {
      * cdzhuzhiyong
      * 2018/8/24 14:38
      **/
-    // \\r\\n 回车换行  \\r 换行
+    // \r\n 回车换行  \r 换行
     //读取换行的文本文件以~间隔
     public static String getFileContentToStringByTxt(String path){
         StringBuffer stringBuffer = new StringBuffer();
@@ -59,5 +60,10 @@ public class ReadFileToString {
             return stringBuffer.toString();
         }catch(Exception e){}
         return null;
+    }
+
+    public InputStream getInputStreamWhithOutBOM(InputStream inputStream){
+        BOMInputStream bomInputStream = new BOMInputStream(inputStream);
+        return bomInputStream;
     }
 }
