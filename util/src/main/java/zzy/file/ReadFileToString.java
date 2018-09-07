@@ -1,4 +1,4 @@
-package zzy.readfile;
+package zzy.file;
 
 import org.apache.commons.io.input.BOMInputStream;
 import zzy.string.StringUtils;
