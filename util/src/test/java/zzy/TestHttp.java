@@ -10,16 +10,12 @@ import java.util.*;
 public class TestHttp {
     @Test
     public void test(){
-        String url = "http://api.interpreter.caiyunai.com/v1/translator";
-        String fromTo = "zh2en";
-        String token = "token cqcbbagr2siar9tirnmw";
-        List<String> contentList = new ArrayList<>();
-        contentList.add("我是你爸爸");
-        PostData postData = new PostData(UUID.randomUUID().toString(),contentList,fromTo);
-        String json = JSON.toJSONString(postData);
-        Map map = new HashMap();
-        map.put("X-Authorization",token);
-        HttpResponse httpResponse = HttpClient.getInstance().post(url,json,map);
-        System.out.println(httpResponse);
+        String url = " https://www.youlai.cn/api/jd_skill";
+        Map<String,String> map = new HashMap<>();
+        map.put("keyword","感冒");
+        map.put("long_word","怎么办");
+        HttpResponse httpResponse = HttpClient.getInstance().post(url,map);
+        System.out.println(httpResponse.getResult());
     }
+
 }
