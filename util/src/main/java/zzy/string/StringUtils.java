@@ -29,7 +29,7 @@ public class StringUtils {
      * 2018/7/3 20:48
      **/
     public static boolean isEmpty(String element){
-        return element == null || element.length() <=0;
+        return element == null || element.trim().length() <=0;
     }
     /**
      * ${判断字符串不为空}
